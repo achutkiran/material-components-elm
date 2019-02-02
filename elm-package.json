@@ -4,7 +4,7 @@
     "repository": "https://github.com/achutkiran/material-components-elm.git",
     "license": "BSD3",
     "source-directories": [
-        "."
+        "src"
     ],
     "exposed-modules": [
         "Mwc.Button",

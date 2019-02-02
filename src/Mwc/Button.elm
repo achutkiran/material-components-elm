@@ -1,14 +1,11 @@
-module Mwc.Button exposing
-    ( ButtonType(..)
-    , dense
-    , disabled
-    , extraAttributes
-    , icon
-    , label
-    , onClick
-    , type_
-    , view
-    )
+module Mwc.Button exposing (ButtonType(..), dense, disabled, extraAttributes, icon, label, onClick, type_, view)
+
+{-| Material Button. It is elm wrapper for Material Web components button
+Used Elm-css for Styling
+
+@docs ButtonType, dense, disabled, extraAttributes, icon, label, onClick, type_, view
+
+-}
 
 import Html.Styled exposing (Attribute, Html, node, text)
 import Html.Styled.Attributes as Attr
@@ -108,11 +105,8 @@ extraAttributes otherAttr =
     OtherAttr otherAttr
 
 
-
-{- Onclick Handler
- -}
-
-
+{-| Onclick Handler
+-}
 onClick : msg -> Property msg
 onClick click =
     OnCLick click

@@ -1,13 +1,14 @@
-module Mwc.Progress exposing
-    ( extraAttributes
-    , progressBar
-    , progressSpinner
-    , view
-    )
+module Mwc.Progress exposing (extraAttributes, progressBar, progressSpinner, view)
+
+{-| Material Progress. It is elm wrapper for Polymer Web components paper progress bar and paper progress spinner
+Used Elm-css for Styling
+
+@docs extraAttributes, progressBar, progressSpinner, view
+
+-}
 
 import Html.Styled exposing (Attribute, Html, node, text)
 import Html.Styled.Attributes as Attr
-import Html.Styled.Events as HtmlEvents
 import Json.Encode as Encode
 
 

@@ -1,15 +1,15 @@
-module Mwc.Switch exposing
-    ( check
-    , disable
-    , extraAttributes
-    , onClick
-    , view
-    )
+module Mwc.Switch exposing (check, disable, extraAttributes, onClick, view)
+
+{-| Material Switch. It is elm wrapper for Material Web components switch
+Used Elm-css for Styling
+
+@docs check, disable, extraAttributes, onClick, view
+
+-}
 
 import Html.Styled exposing (Attribute, Html, node)
 import Html.Styled.Attributes as Attr
 import Html.Styled.Events as HtmlEvents
-import Json.Decode as Decode
 import Json.Encode as Encode
 
 

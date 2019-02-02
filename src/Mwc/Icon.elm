@@ -1,12 +1,13 @@
-module Mwc.Icon exposing
-    ( extraAttributes
-    , iconName
-    , view
-    )
+module Mwc.Icon exposing (extraAttributes, iconName, view)
+
+{-| Material Icon. It is elm wrapper for Material Web components icon
+Used Elm-css for Styling
+
+@docs extraAttributes, iconName, view
+
+-}
 
 import Html.Styled exposing (Attribute, Html, node, text)
-import Html.Styled.Attributes as Attr
-import Json.Encode as Encode
 
 
 type Property msg

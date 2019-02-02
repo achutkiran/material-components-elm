@@ -1,12 +1,11 @@
-module Mwc.CheckBox exposing
-    ( checked
-    , disabled
-    , extraAttributes
-    , indeterminate
-    , onToggle
-    , value
-    , view
-    )
+module Mwc.CheckBox exposing (checked, disabled, extraAttributes, indeterminate, onToggle, value, view)
+
+{-| Material Checkbox. It is elm wrapper for Material Web components Checkbox
+Used Elm-css for Styling
+
+@docs checked, disabled, extraAttributes, indeterminate, onToggle, value, view
+
+-}
 
 import Html.Styled exposing (Attribute, Html, node, text)
 import Html.Styled.Attributes as Attr

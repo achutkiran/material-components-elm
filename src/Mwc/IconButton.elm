@@ -1,11 +1,11 @@
-module Mwc.IconButton exposing
-    ( disable
-    , extraAttributes
-    , icon
-    , onClick
-    , tooltip
-    , view
-    )
+module Mwc.IconButton exposing (disable, extraAttributes, icon, onClick, tooltip, view)
+
+{-| Material IconButtom. It is elm wrapper for Polymer Web components paper icon button
+Used Elm-css for Styling
+
+@docs disable, extraAttributes, icon, onClick, tooltip, view
+
+-}
 
 import Html.Styled exposing (Attribute, Html, node, text)
 import Html.Styled.Attributes as Attr

@@ -1,12 +1,11 @@
-module Mwc.Fab exposing
-    ( disabled
-    , extraAttributes
-    , icon
-    , mini
-    , onClick
-    , tooltip
-    , view
-    )
+module Mwc.Fab exposing (disabled, extraAttributes, icon, mini, onClick, tooltip, view)
+
+{-| Material FAB. It is elm wrapper for Polymer Web components Paper Floating action button
+Used Elm-css for Styling
+
+@docs disabled, extraAttributes, icon, mini, onClick, tooltip, view
+
+-}
 
 import Html.Styled exposing (Attribute, Html, node, text)
 import Html.Styled.Attributes as Attr

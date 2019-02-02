@@ -1,13 +1,12 @@
-module Mwc.Tabs exposing
-    ( extraAttributes
-    , onClick
-    , scrollable
-    , selected
-    , tabText
-    , view
-    )
+module Mwc.Tabs exposing (extraAttributes, onClick, scrollable, selected, tabText, view)
 
-import Css exposing (..)
+{-| Material Tabs. It is elm wrapper for Polymer Web components paper tabs
+Used Elm-css for Styling
+
+@docs extraAttributes, onClick, scrollable, selected, tabText, view
+
+-}
+
 import Html.Styled exposing (Attribute, Html, node, text)
 import Html.Styled.Attributes as Attr
 import Html.Styled.Events as HtmlEvents
