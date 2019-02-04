@@ -1,13 +1,13 @@
 module Mwc.TextField exposing
     ( autoValidate, disabled, errorText, extraAttributes, icon, iconButton, iconClick
-    , iconTrailing, inputType, invalid, label, onInput, pattern, placeHolder, readonly, required, value, view, noOp
+    , iconTrailing, inputType, invalid, label, onInput, pattern, placeHolder, readonly, required, value, view, noOp, Property
     )
 
 {-| Material TextField. It is elm wrapper for polymer Web components paper text field
 Used Elm-css for Styling
 
 @docs autoValidate, disabled, errorText, extraAttributes, icon, iconButton, iconClick
-@docs iconTrailing, inputType, invalid, label, onInput, pattern, placeHolder, readonly, required, value, view, noOp
+@docs iconTrailing, inputType, invalid, label, onInput, pattern, placeHolder, readonly, required, value, view, noOp, Property
 
 -}
 
@@ -17,6 +17,8 @@ import Html.Styled.Events as HtmlEvents
 import Json.Encode as Encode
 
 
+{-| TextField Properties
+-}
 type Property msg
     = Value String
     | Label String
