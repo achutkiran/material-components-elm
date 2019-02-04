@@ -1,13 +1,13 @@
 module Mwc.TextField exposing
     ( autoValidate, disabled, errorText, extraAttributes, icon, iconButton, iconClick
-    , iconTrailing, inputType, invalid, label, onInput, pattern, placeHolder, readonly, required, value, view
+    , iconTrailing, inputType, invalid, label, onInput, pattern, placeHolder, readonly, required, value, view, noOp
     )
 
 {-| Material TextField. It is elm wrapper for polymer Web components paper text field
 Used Elm-css for Styling
 
 @docs autoValidate, disabled, errorText, extraAttributes, icon, iconButton, iconClick
-@docs iconTrailing, inputType, invalid, label, onInput, pattern, placeHolder, readonly, required, value, view
+@docs iconTrailing, inputType, invalid, label, onInput, pattern, placeHolder, readonly, required, value, view, noOp
 
 -}
 
