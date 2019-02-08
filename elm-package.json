@@ -1,5 +1,5 @@
 {
-    "version": "1.2.0",
+    "version": "1.2.1",
     "summary": "Elm Bindings for MWC and Polymer Elements",
     "repository": "https://github.com/achutkiran/material-components-elm.git",
     "license": "BSD3",
@@ -15,7 +15,8 @@
         "Mwc.Progress",
         "Mwc.Switch",
         "Mwc.Tabs",
-        "Mwc.TextField"
+        "Mwc.TextField",
+        "Mwc.Dialog"
     ],
     "dependencies": {
         "elm-lang/core": "5.1.1 <= v < 6.0.0",
