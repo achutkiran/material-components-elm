@@ -1,12 +1,5 @@
 module Mwc.Dialog exposing (actionBar, body, extraAttributes, open, title, view)
 
-{-| Material Dialog. It is elm wrapper for Ploymer Paper--Dialog Component
-Used Elm-css for Styling
-
-@docs actionBar, body, extraAttributes, open, title, view
-
--}
-
 import Css exposing (..)
 import Html.Styled exposing (Attribute, Html, div, h2, node, text)
 import Html.Styled.Attributes as Attr
@@ -48,36 +41,26 @@ defaultConfig =
 ---- Property  Functions ----
 
 
-{-| The title of the dialog
--}
 title : String -> Property msg
 title data =
     Title data
 
 
-{-| List of elements to in bosy section
--}
 body : List (Html msg) -> Property msg
 body val =
     Body val
 
 
-{-| Elements to be displayed in actionbar
--}
 actionBar : List (Html msg) -> Property msg
 actionBar val =
     ActionBar val
 
 
-{-| Used to open the dialog
--}
 open : Bool -> Property msg
 open val =
     Opened val
 
 
-{-| Additional properties like css
--}
 extraAttributes : List (Attribute msg) -> Property msg
 extraAttributes val =
     OtherAttr val
@@ -87,8 +70,6 @@ extraAttributes val =
 ---- View ----
 
 
-{-| renders the dialog
--}
 view : List (Property msg) -> Html msg
 view properties =
     let
@@ -100,6 +81,10 @@ view properties =
         [ h2
             [ Attr.css
                 [ textAlign start
+                , color (rgba 0 0 0 0.87)
+                , paddingLeft (px 24)
+                , fontFamilies [ "Roboto" ]
+                , fontSize (px 20)
                 , color (rgba 0 0 0 0.87)
                 ]
             ]
@@ -154,5 +139,9 @@ fetchProperties : Config msg -> List (Attribute msg)
 fetchProperties config =
     [ Attr.property "opened" (Encode.bool config.opened)
     , Attr.property "modal" (Encode.bool True)
+    , Attr.css
+        [ borderRadius (px 4)
+        , width (px 560)
+        ]
     ]
         ++ config.otherAttr
