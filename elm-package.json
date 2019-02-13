@@ -16,7 +16,8 @@
         "Mwc.Switch",
         "Mwc.Tabs",
         "Mwc.TextField",
-        "Mwc.Dialog"
+        "Mwc.Dialog",
+        "Mwc.Snackbar"
     ],
     "dependencies": {
         "elm-lang/core": "5.1.1 <= v < 6.0.0",
