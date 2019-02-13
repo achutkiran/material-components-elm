@@ -1,8 +1,16 @@
 module Mwc.Typography exposing (body1, body2, button, caption, headline1, headline2, headline3, headline4, headline5, headline6, overline, subtitle1, subtitle2)
 
+{-| Material Typography
+
+@docs body1, body2, button, caption, headline1, headline2, headline3, headline4, headline5, headline6, overline, subtitle1, subtitle2
+
+-}
+
 import Css exposing (..)
 
 
+{-| h1 heading1
+-}
 headline1 : Style
 headline1 =
     Css.batch
@@ -18,6 +26,8 @@ headline1 =
         ]
 
 
+{-| h2 heading2
+-}
 headline2 : Style
 headline2 =
     Css.batch
@@ -33,6 +43,8 @@ headline2 =
         ]
 
 
+{-| h3 heading3
+-}
 headline3 : Style
 headline3 =
     Css.batch
@@ -47,6 +59,8 @@ headline3 =
         ]
 
 
+{-| h4 heading4
+-}
 headline4 : Style
 headline4 =
     Css.batch
@@ -62,6 +76,8 @@ headline4 =
         ]
 
 
+{-| h5 heading5
+-}
 headline5 : Style
 headline5 =
     Css.batch
@@ -76,6 +92,8 @@ headline5 =
         ]
 
 
+{-| h6 heading6
+-}
 headline6 : Style
 headline6 =
     Css.batch
@@ -91,6 +109,8 @@ headline6 =
         ]
 
 
+{-| subtitle1
+-}
 subtitle1 : Style
 subtitle1 =
     Css.batch
@@ -106,6 +126,8 @@ subtitle1 =
         ]
 
 
+{-| subtitle2
+-}
 subtitle2 : Style
 subtitle2 =
     Css.batch
@@ -121,6 +143,8 @@ subtitle2 =
         ]
 
 
+{-| body1
+-}
 body1 : Style
 body1 =
     Css.batch
@@ -136,6 +160,8 @@ body1 =
         ]
 
 
+{-| body2
+-}
 body2 : Style
 body2 =
     Css.batch
@@ -151,6 +177,8 @@ body2 =
         ]
 
 
+{-| caption
+-}
 caption : Style
 caption =
     Css.batch
@@ -166,6 +194,8 @@ caption =
         ]
 
 
+{-| button
+-}
 button : Style
 button =
     Css.batch
@@ -181,6 +211,8 @@ button =
         ]
 
 
+{-| overline
+-}
 overline : Style
 overline =
     Css.batch
