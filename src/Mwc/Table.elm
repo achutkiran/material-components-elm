@@ -1,6 +1,9 @@
 module Mwc.Table exposing (tbody, td, tfoot, th, thead, tr, view)
 
 {-| Matrial design Table
+
+@docs tbody, td, tfoot, th, thead, tr, view
+
 -}
 
 import Css exposing (..)
