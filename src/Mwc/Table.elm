@@ -1,8 +1,8 @@
-module Mwc.Table exposing (tbody, td, tfoot, th, thead, tr, view)
+module Mwc.Table exposing (tbody, td, tfoot, th, thead, tr, view, Tr, Trow, Property)
 
 {-| Matrial design Table
 
-@docs tbody, td, tfoot, th, thead, tr, view
+@docs tbody, td, tfoot, th, thead, tr, view, Tr, Trow, Property
 
 -}
 
@@ -16,15 +16,21 @@ import Html.Styled.Attributes as Attr
 ---- PROPERTIES ----
 
 
+{-| Tr type
+-}
 type Tr msg
     = Th (List Style) (List (Html msg))
     | Td (List Style) (List (Html msg))
 
 
+{-| Table Row type
+-}
 type Trow msg
     = Tr (List Style) (List (Tr msg))
 
 
+{-| Properties of the table
+-}
 type Property msg
     = Thead (List Style) (List (Trow msg))
     | Tbody (List Style) (List (Trow msg))
