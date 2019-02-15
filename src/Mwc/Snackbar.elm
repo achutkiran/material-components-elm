@@ -260,6 +260,15 @@ setTimeOut config =
 -}
 view : Model msg a -> (Msg msg a -> msg) -> Html msg
 view model toMsg =
+    let
+        ( config, isActive ) =
+            case model.state of
+                Active c ->
+                    ( c, True )
+
+                Closed ->
+                    ( defaultConfig -1 toMsg, False )
+    in
     div
         [ Attr.css
             [ displayFlex
@@ -271,22 +280,18 @@ view model toMsg =
             , left (px 0)
             , bottom (px 0)
             , margin (px 0)
+            , if isActive then
+                pointerEvents auto
+
+              else
+                pointerEvents none
             ]
         ]
-        [ snackbarContainer model toMsg ]
+        [ snackbarContainer config isActive toMsg ]
 
 
-snackbarContainer : Model msg a -> (Msg msg a -> msg) -> Html msg
-snackbarContainer model toMsg =
-    let
-        ( config, isActive ) =
-            case model.state of
-                Active c ->
-                    ( c, True )
-
-                Closed ->
-                    ( defaultConfig -1 toMsg, False )
-    in
+snackbarContainer : Config msg a -> Bool -> (Msg msg a -> msg) -> Html msg
+snackbarContainer config isActive toMsg =
     div
         [ Attr.css
             [ backgroundColor (rgba 0 0 0 0.87)
@@ -323,12 +328,12 @@ snackbarContainer model toMsg =
                 ]
             ]
             [ text config.message ]
-        , actionButton config model
+        , actionButton config
         ]
 
 
-actionButton : Config msg a -> Model msg a -> Html msg
-actionButton config model =
+actionButton : Config msg a -> Html msg
+actionButton config =
     div
         [ Attr.css
             [ padding2 (px 6) (px 8)

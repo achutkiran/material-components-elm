@@ -8,6 +8,7 @@ Used Elm-css for Styling
 -}
 
 import Css exposing (..)
+import Css.Global
 import Html.Styled exposing (Attribute, Html, div, h2, node, text)
 import Html.Styled.Attributes as Attr
 import Json.Encode as Encode
@@ -124,6 +125,10 @@ view properties =
                 , margin (px 0)
                 , paddingBottom (px 8)
                 , paddingRight (px 8)
+                , Css.Global.children
+                    [ Css.Global.typeSelector "*"
+                        [ paddingLeft (px 8) ]
+                    ]
                 ]
             ]
             config.actionBar
