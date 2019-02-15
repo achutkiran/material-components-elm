@@ -117,9 +117,7 @@ view style properties =
     Html.table
         [ Attr.css <|
             Css.batch
-                [ width (pct 100)
-                , paddingLeft (px 16)
-                , paddingRight (px 16)
+                [ whiteSpace noWrap
                 , backgroundColor (rgb 255 255 255)
                 , borderCollapse collapse
                 ]
@@ -198,6 +196,10 @@ fetchColumnData data =
                         , fontFamilies [ "Roboto", "sans-serif" ]
                         , fontSize (px 12)
                         , color (rgba 0 0 0 0.6)
+                        , firstOfType
+                            [ paddingLeft (px 24) ]
+                        , lastOfType
+                            [ paddingRight (px 24) ]
                         ]
                         :: style
                 ]
@@ -211,6 +213,10 @@ fetchColumnData data =
                         , fontFamilies [ "Roboto", "sans-serif" ]
                         , fontSize (px 14)
                         , color (rgba 0 0 0 0.87)
+                        , firstOfType
+                            [ paddingLeft (px 24) ]
+                        , lastOfType
+                            [ paddingRight (px 24) ]
                         ]
                         :: style
                 ]
