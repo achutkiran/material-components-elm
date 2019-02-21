@@ -1,9 +1,9 @@
-module Mwc.Dialog exposing (actionBar, body, extraAttributes, open, title, view)
+module Mwc.Dialog exposing (actionBar, body, extraAttributes, title, view, Visibility, visibility)
 
 {-| Material Dialog. It is elm wrapper for Ploymer Paper--Dialog Component
 Used Elm-css for Styling
 
-@docs actionBar, body, extraAttributes, open, title, view
+@docs actionBar, body, extraAttributes, title, view, Visibility, visibility
 
 -}
 
@@ -17,9 +17,16 @@ import Json.Encode as Encode
 type Property msg
     = Title String
     | Body (List (Html msg))
-    | Opened Bool
+    | Opened Visibility
     | ActionBar (List (Html msg))
     | OtherAttr (List (Attribute msg))
+
+
+{-| Visibility option
+-}
+type Visibility
+    = Visible
+    | Hidden
 
 
 
@@ -29,7 +36,7 @@ type Property msg
 type alias Config msg =
     { title : String
     , body : List (Html msg)
-    , opened : Bool
+    , opened : Visibility
     , actionBar : List (Html msg)
     , otherAttr : List (Attribute msg)
     }
@@ -39,7 +46,7 @@ defaultConfig : Config msg
 defaultConfig =
     { title = ""
     , body = []
-    , opened = False
+    , opened = Hidden
     , actionBar = []
     , otherAttr = []
     }
@@ -72,8 +79,8 @@ actionBar val =
 
 {-| Used to open the dialog
 -}
-open : Bool -> Property msg
-open val =
+visibility : Visibility -> Property msg
+visibility val =
     Opened val
 
 
@@ -161,7 +168,12 @@ propToConfig prop config =
 
 fetchProperties : Config msg -> List (Attribute msg)
 fetchProperties config =
-    [ Attr.property "opened" (Encode.bool config.opened)
+    [ case config.opened of
+        Visible ->
+            Attr.property "opened" (Encode.bool True)
+
+        Hidden ->
+            Attr.property "opened" (Encode.bool False)
     , Attr.property "modal" (Encode.bool True)
     , Attr.css
         [ borderRadius (px 4)
