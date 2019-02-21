@@ -1,4 +1,4 @@
-module Mwc.Dialog exposing (actionBar, body, extraAttributes, title, view, Visibility, visibility)
+module Mwc.Dialog exposing (actionBar, body, extraAttributes, title, view, Visibility(..), visibility)
 
 {-| Material Dialog. It is elm wrapper for Ploymer Paper--Dialog Component
 Used Elm-css for Styling
