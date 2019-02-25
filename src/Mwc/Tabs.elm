@@ -7,6 +7,7 @@ Used Elm-css for Styling
 
 -}
 
+import Css exposing (..)
 import Html.Styled exposing (Attribute, Html, node, text)
 import Html.Styled.Attributes as Attr
 import Html.Styled.Events as HtmlEvents
@@ -14,7 +15,7 @@ import Json.Encode as Encode
 
 
 type Property msg
-    = TabText (List String)
+    = TabText (List (Html msg))
     | Scrollable Bool
     | TabSelect Int
     | OtherAttr (List (Attribute msg))
@@ -26,7 +27,7 @@ type Property msg
 
 
 type alias Config msg =
-    { tabText : List String
+    { tabText : List (Html msg)
     , scrollable : Bool
     , tabSelect : Int
     , otherAttr : List (Attribute msg)
@@ -50,7 +51,7 @@ defaultConfig =
 
 {-| List of tab texts
 -}
-tabText : List String -> Property msg
+tabText : List (Html msg) -> Property msg
 tabText texts =
     TabText texts
 
@@ -99,6 +100,10 @@ view properties =
         ([ Attr.property "selected" (Encode.int config.tabSelect)
          , Attr.property "scrollable" (Encode.bool config.scrollable)
          , Attr.property "fitContainer" (Encode.bool config.scrollable)
+         , Attr.css
+            [ backgroundColor transparent
+            , borderBottom3 (px 1) solid (hex "e0e0e0")
+            ]
 
          -- , Attr.css [ property "--paper-tab-ink" "#6200ee" ]
          ]
@@ -108,7 +113,7 @@ view properties =
             (\index tabTitle ->
                 node "paper-tab"
                     [ fetchOnClick index config.onClick ]
-                    [ text tabTitle ]
+                    [ tabTitle ]
             )
             config.tabText
         )
