@@ -1,9 +1,9 @@
-module Mwc.Button exposing (normal, raised, unelevated, outlined, dense, disabled, extraAttributes, icon, label, onClick, type_, view)
+module Mwc.Button exposing (normal, raised, unelevated, outlined, dense, disabled, extraAttributes, icon, label, onClick, view)
 
 {-| Material Button. It is elm wrapper for Material Web components button
 Used Elm-css for Styling
 
-@docs normal, raised, unelevated, outlined, dense, disabled, extraAttributes, icon, label, onClick, type_, view
+@docs normal, raised, unelevated, outlined, dense, disabled, extraAttributes, icon, label, onClick, view
 
 -}
 
@@ -65,37 +65,30 @@ defaultConfig =
 
 {-| Normal Button Type
 -}
-normal : ButtonType
+normal : Property msg
 normal =
-    Normal
+    Type Normal
 
 
 {-| Raised Button Type
 -}
-raised : ButtonType
+raised : Property msg
 raised =
-    Raised
+    Type Raised
 
 
 {-| unelevated Button Type
 -}
-unelevated : ButtonType
+unelevated : Property msg
 unelevated =
-    Unelevated
+    Type Unelevated
 
 
 {-| outlined Button Type
 -}
-outlined : ButtonType
+outlined : Property msg
 outlined =
-    Outlined
-
-
-{-| Selects button type
--}
-type_ : ButtonType -> Property msg
-type_ buttonType =
-    Type buttonType
+    Type Outlined
 
 
 {-| Makes button dense
