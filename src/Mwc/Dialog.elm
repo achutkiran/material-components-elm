@@ -1,9 +1,9 @@
-module Mwc.Dialog exposing (actionBar, body, extraAttributes, title, view, Visibility(..), visibility)
+module Mwc.Dialog exposing (actionBar, body, extraAttributes, title, view, Visibility, visible, hidden, visibility)
 
 {-| Material Dialog. It is elm wrapper for Ploymer Paper--Dialog Component
 Used Elm-css for Styling
 
-@docs actionBar, body, extraAttributes, title, view, Visibility, visibility
+@docs actionBar, body, extraAttributes, title, view, Visibility, visible, hidden, visibility
 
 -}
 
@@ -54,6 +54,20 @@ defaultConfig =
 
 
 ---- Property  Functions ----
+
+
+{-| Makes dialog visible
+-}
+visible : Visibility
+visible =
+    Visible
+
+
+{-| Makes dialog hidden
+-}
+hidden : Visibility
+hidden =
+    Hidden
 
 
 {-| The title of the dialog
