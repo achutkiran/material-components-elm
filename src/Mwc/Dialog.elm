@@ -135,6 +135,7 @@ view properties =
                 [ paddingBottom (px 28)
                 , color (rgba 0 0 0 0.6)
                 , textAlign start
+                , maxHeight (px 570)
                 ]
             ]
             config.body
