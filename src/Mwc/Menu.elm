@@ -1,8 +1,8 @@
-module Mwc.Menu exposing (Model, Msg, disabled, extraAttributes, icon, model, update, view, zIndex)
+module Mwc.Menu exposing (Model, Msg, disabled, extraAttributes, icon, model, update, view, zIndex, item, onSelect)
 
 {-| Material design menu
 
-@docs Model, Msg, disabled, extraAttributes, icon, model, update, view, zIndex
+@docs Model, Msg, disabled, extraAttributes, icon, model, update, view, zIndex, item, onSelect
 
 -}
 
@@ -13,12 +13,14 @@ import Html.Styled.Attributes as Attr
 import Html.Styled.Events exposing (onClick)
 import Json.Encode as Encode
 import Mwc.IconButton as IconButton
+import Task
 
 
 type Property msg
     = Disabled Bool
     | ZIndex Int
     | Icon String
+    | OnSelect msg
     | OtherAttr (List (Attribute msg))
 
 
@@ -39,6 +41,23 @@ defaultConfig =
     { disabled = False
     , icon = ""
     , zIndex = -1
+    , otherAttr = []
+    }
+
+
+type alias ItemConfig msg =
+    { disabled : Bool
+    , onSelect : Maybe msg
+    , html : List (Html msg)
+    , otherAttr : List (Attribute msg)
+    }
+
+
+defaultItemConfig : List (Html msg) -> ItemConfig msg
+defaultItemConfig html =
+    { disabled = False
+    , onSelect = Nothing
+    , html = html
     , otherAttr = []
     }
 
@@ -75,6 +94,36 @@ extraAttributes otherAttr =
     OtherAttr otherAttr
 
 
+{-| onSelect property of menuItem
+-}
+onSelect : msg -> Property msg
+onSelect msg =
+    OnSelect msg
+
+
+{-| item in menu
+-}
+item : List (Property msg) -> List (Html msg) -> ItemConfig msg
+item properties html =
+    List.foldl propToMenuConfig (defaultItemConfig html) properties
+
+
+propToMenuConfig : Property msg -> ItemConfig msg -> ItemConfig msg
+propToMenuConfig prop itemConfig =
+    case prop of
+        Disabled val ->
+            { itemConfig | disabled = val }
+
+        OnSelect msg ->
+            { itemConfig | onSelect = Just msg }
+
+        OtherAttr val ->
+            { itemConfig | otherAttr = val }
+
+        _ ->
+            itemConfig
+
+
 
 ---- MODEL ----
 
@@ -104,18 +153,26 @@ model =
 
 {-| Menu Msg
 -}
-type Msg
+type Msg msg
     = ToggleMenu String
+    | ToMain msg String
     | NoOp
 
 
 {-| update function of menu
 -}
-update : Msg -> Model -> ( Model, Cmd msg )
+update : Msg msg -> Model -> ( Model, Cmd msg )
 update msg model =
     case msg of
         NoOp ->
             ( model, Cmd.none )
+
+        ToMain msg id ->
+            ( { model
+                | menuOpen = Dict.insert id (not (checkMenuOpen id model)) model.menuOpen
+              }
+            , msgToCmd msg
+            )
 
         ToggleMenu id ->
             ( { model
@@ -125,10 +182,16 @@ update msg model =
             )
 
 
+msgToCmd : msg -> Cmd msg
+msgToCmd val =
+    Task.succeed val
+        |> Task.perform identity
+
+
 {-| view function of menu
 -}
-view : List (Property msg) -> List (Html msg) -> String -> Model -> (Msg -> msg) -> Html msg
-view properties html id model toMsg =
+view : List (Property msg) -> List (ItemConfig msg) -> String -> Model -> (Msg msg -> msg) -> Html msg
+view properties menuItems id model toMsg =
     let
         config =
             fetchConfig properties
@@ -161,7 +224,7 @@ view properties html id model toMsg =
                 , Attr.property "open" (Encode.bool (checkMenuOpen id model))
                 , Attr.property "autofocus" (Encode.bool True)
                 ]
-                (List.map (fetchMenuItem toMsg id) html)
+                (List.map (fetchMenuItem toMsg id) menuItems)
             ]
         , if checkMenuOpen id model then
             div
@@ -194,11 +257,20 @@ view properties html id model toMsg =
         ]
 
 
-fetchMenuItem : (Msg -> msg) -> String -> Html msg -> Html msg
-fetchMenuItem toMsg id html =
+fetchMenuItem : (Msg msg -> msg) -> String -> ItemConfig msg -> Html msg
+fetchMenuItem toMsg id menuItem =
     node "mwc-list-item"
-        [ onClick (toMsg (ToggleMenu id)) ]
-        [ html ]
+        ([ case menuItem.onSelect of
+            Just msg ->
+                onClick (toMsg (ToMain msg id))
+
+            Nothing ->
+                onClick (toMsg (ToggleMenu id))
+         , Attr.disabled menuItem.disabled
+         ]
+            ++ menuItem.otherAttr
+        )
+        menuItem.html
 
 
 fetchConfig : List (Property msg) -> Config msg
@@ -220,6 +292,9 @@ propToConfig prop config =
 
         OtherAttr val ->
             { config | otherAttr = val }
+
+        _ ->
+            config
 
 
 checkMenuOpen : String -> Model -> Bool
