@@ -1,8 +1,8 @@
-module Mwc.Menu exposing (Model, Msg, disabled, extraAttributes, icon, model, update, view, zIndex, item, onSelect)
+module Mwc.Menu exposing (Model, Msg, disabled, extraAttributes, icon, model, update, view, zIndex, item, onSelect, divider)
 
 {-| Material design menu
 
-@docs Model, Msg, disabled, extraAttributes, icon, model, update, view, zIndex, item, onSelect
+@docs Model, Msg, disabled, extraAttributes, icon, model, update, view, zIndex, item, onSelect, divider
 
 -}
 
@@ -20,6 +20,7 @@ type Property msg
     = Disabled Bool
     | ZIndex Int
     | Icon String
+    | Divider
     | OnSelect msg
     | OtherAttr (List (Attribute msg))
 
@@ -48,6 +49,7 @@ defaultConfig =
 type alias ItemConfig msg =
     { disabled : Bool
     , onSelect : Maybe msg
+    , divider : Bool
     , html : List (Html msg)
     , otherAttr : List (Attribute msg)
     }
@@ -57,6 +59,7 @@ defaultItemConfig : List (Html msg) -> ItemConfig msg
 defaultItemConfig html =
     { disabled = False
     , onSelect = Nothing
+    , divider = False
     , html = html
     , otherAttr = []
     }
@@ -85,6 +88,13 @@ disabled val =
 zIndex : Int -> Property msg
 zIndex val =
     ZIndex val
+
+
+{-| divider fo menu item
+-}
+divider : Property msg
+divider =
+    Divider
 
 
 {-| extraAttributes property of menu
@@ -119,6 +129,9 @@ propToMenuConfig prop itemConfig =
 
         OtherAttr val ->
             { itemConfig | otherAttr = val }
+
+        Divider ->
+            { itemConfig | divider = True }
 
         _ ->
             itemConfig
@@ -266,6 +279,13 @@ fetchMenuItem toMsg id menuItem =
 
             Nothing ->
                 onClick (toMsg (ToggleMenu id))
+         , Attr.css
+            [ if menuItem.divider then
+                borderBottom3 (px 1) solid (rgba 0 0 0 0.12)
+
+              else
+                borderBottomStyle none
+            ]
          , Attr.disabled menuItem.disabled
          ]
             ++ menuItem.otherAttr
