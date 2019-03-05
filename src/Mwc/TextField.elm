@@ -1,12 +1,12 @@
 module Mwc.TextField exposing
-    ( autoValidate, disabled, errorText, extraAttributes, icon, iconButton, iconClick
+    ( autoValidate, disabled, errorText, extraAttributes, icon, iconButton, iconClick, textArea
     , iconTrailing, inputType, invalid, label, onInput, pattern, placeHolder, readonly, required, value, view, noOp, Property
     )
 
 {-| Material TextField. It is elm wrapper for polymer Web components paper text field
 Used Elm-css for Styling
 
-@docs autoValidate, disabled, errorText, extraAttributes, icon, iconButton, iconClick
+@docs autoValidate, disabled, errorText, extraAttributes, icon, iconButton, iconClick, textArea
 @docs iconTrailing, inputType, invalid, label, onInput, pattern, placeHolder, readonly, required, value, view, noOp, Property
 
 -}
@@ -32,6 +32,7 @@ type Property msg
     | Pattern String
     | ErrorText String
     | PlaceHolder String
+    | TextArea Bool
     | InputType String
     | OtherAttr (List (Attribute msg))
     | OnInput (Maybe (String -> msg))
@@ -51,6 +52,7 @@ type alias Config msg =
     , icon : String
     , iconButton : String
     , iconSlot : String
+    , textArea : Bool
     , disabled : Bool
     , readonly : Bool
     , required : Bool
@@ -73,6 +75,7 @@ defaultConfig =
     , invalid = False
     , iconButton = ""
     , iconSlot = "prefix"
+    , textArea = False
     , disabled = False
     , readonly = False
     , required = False
@@ -196,6 +199,13 @@ autoValidate =
     AutoValidate True
 
 
+{-| TextArea
+-}
+textArea : Property msg
+textArea =
+    TextArea True
+
+
 {-| Displays error message
 -}
 invalid : Property msg
@@ -229,9 +239,15 @@ view properties =
         config =
             fetchConfig properties
     in
-    node "paper-input"
-        (fetchProperties config)
-        [ checkIcon config ]
+    if config.textArea then
+        node "paper-textarea"
+            (fetchProperties config)
+            [ checkIcon config ]
+
+    else
+        node "paper-input"
+            (fetchProperties config)
+            [ checkIcon config ]
 
 
 fetchConfig : List (Property msg) -> Config msg
@@ -292,6 +308,9 @@ propToConfig prop config =
 
         OnInput input ->
             { config | onInput = input }
+
+        TextArea val ->
+            { config | textArea = val }
 
         None ->
             config
