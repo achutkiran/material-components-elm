@@ -1,9 +1,9 @@
-module Mwc.Fab exposing (disabled, extraAttributes, icon, mini, onClick, tooltip, view)
+module Mwc.Fab exposing (disabled, extraAttributes, icon, mini, onClick, tooltip, view, src)
 
 {-| Material FAB. It is elm wrapper for Polymer Web components Paper Floating action button
 Used Elm-css for Styling
 
-@docs disabled, extraAttributes, icon, mini, onClick, tooltip, view
+@docs disabled, extraAttributes, icon, mini, onClick, tooltip, view, src
 
 -}
 
@@ -18,6 +18,7 @@ type Property msg
     | Tooltip String
     | Disabled Bool
     | Mini Bool
+    | Src String
     | OnClick (Maybe msg)
     | OtherAttr (List (Attribute msg))
 
@@ -31,6 +32,7 @@ type alias Config msg =
     , tooltip : String
     , disabled : Bool
     , mini : Bool
+    , src : String
     , onClick : Maybe msg
     , otherAttr : List (Attribute msg)
     }
@@ -42,6 +44,7 @@ defaultConfig =
     , tooltip = ""
     , disabled = False
     , mini = False
+    , src = ""
     , onClick = Nothing
     , otherAttr = []
     }
@@ -86,6 +89,13 @@ onClick message =
     OnClick (Just message)
 
 
+{-| Svg icon src
+-}
+src : String -> Property msg
+src val =
+    Src val
+
+
 {-| Additional properties like css
 -}
 extraAttributes : List (Attribute msg) -> Property msg
@@ -106,10 +116,10 @@ view properties =
             fetchConfig properties
     in
     node "paper-fab"
-        ([ Attr.property "icon" (Encode.string config.icon)
-         , Attr.property "disabled" (Encode.bool config.disabled)
+        ([ Attr.property "disabled" (Encode.bool config.disabled)
          , Attr.property "title" (Encode.string config.tooltip)
          , Attr.property "mini" (Encode.bool config.mini)
+         , fetchIcon config
          , case config.onClick of
             Nothing ->
                 Attr.class ""
@@ -145,5 +155,17 @@ propToConfig property config =
         OnClick message ->
             { config | onClick = message }
 
+        Src val ->
+            { config | src = val }
+
         OtherAttr val ->
             { config | otherAttr = val }
+
+
+fetchIcon : Config msg -> Attribute msg
+fetchIcon config =
+    if config.src == "" then
+        Attr.property "icon" (Encode.string config.icon)
+
+    else
+        Attr.property "src" (Encode.string config.src)

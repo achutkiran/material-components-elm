@@ -1,9 +1,9 @@
-module Mwc.IconButton exposing (disable, extraAttributes, icon, onClick, tooltip, view)
+module Mwc.IconButton exposing (disable, extraAttributes, icon, onClick, tooltip, view, src)
 
 {-| Material IconButtom. It is elm wrapper for Polymer Web components paper icon button
 Used Elm-css for Styling
 
-@docs disable, extraAttributes, icon, onClick, tooltip, view
+@docs disable, extraAttributes, icon, onClick, tooltip, view, src
 
 -}
 
@@ -18,6 +18,7 @@ type Property msg
     | OnClick (Maybe msg)
     | ToolTip String
     | Disabled Bool
+    | Src String
     | OtherAttr (List (Attribute msg))
 
 
@@ -30,6 +31,7 @@ type alias Config msg =
     , onClick : Maybe msg
     , tooltip : String
     , disabled : Bool
+    , src : String
     , otherAttr : List (Attribute msg)
     }
 
@@ -40,6 +42,7 @@ defaultConfig =
     , onClick = Nothing
     , tooltip = ""
     , disabled = False
+    , src = ""
     , otherAttr = []
     }
 
@@ -76,6 +79,13 @@ disable val =
     Disabled val
 
 
+{-| Svg icon src
+-}
+src : String -> Property msg
+src val =
+    Src val
+
+
 {-| Additional properties like css
 -}
 extraAttributes : List (Attribute msg) -> Property msg
@@ -96,7 +106,7 @@ view properties =
             fetchConfig properties
     in
     node "paper-icon-button"
-        ([ Attr.property "icon" (Encode.string config.icon)
+        ([ fetchIcon config
          , Attr.property "title" (Encode.string config.tooltip)
          , Attr.property "disabled" (Encode.bool config.disabled)
          , case config.onClick of
@@ -131,5 +141,17 @@ propToConfig prop config =
         Disabled val ->
             { config | disabled = val }
 
+        Src val ->
+            { config | src = val }
+
         OtherAttr val ->
             { config | otherAttr = val }
+
+
+fetchIcon : Config msg -> Attribute msg
+fetchIcon config =
+    if config.src == "" then
+        Attr.property "icon" (Encode.string config.icon)
+
+    else
+        Attr.property "src" (Encode.string config.src)
