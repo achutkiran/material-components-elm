@@ -1,0 +1,32 @@
+{
+    "version": "8.0.0",
+    "summary": "Elm Bindings for MWC and Polymer Elements",
+    "repository": "https://github.com/achutkiran/material-components-elm.git",
+    "license": "BSD3",
+    "source-directories": [
+        "src"
+    ],
+    "exposed-modules": [
+        "Mwc.Button",
+        "Mwc.CheckBox",
+        "Mwc.Fab",
+        "Mwc.Icon",
+        "Mwc.IconButton",
+        "Mwc.Progress",
+        "Mwc.Switch",
+        "Mwc.Tabs",
+        "Mwc.TextField",
+        "Mwc.Dialog",
+        "Mwc.Snackbar",
+        "Mwc.Typography",
+        "Mwc.Table",
+        "Mwc.Menu",
+        "Mwc.Chips"
+    ],
+    "dependencies": {
+        "elm-lang/core": "5.1.1 <= v < 6.0.0",
+        "elm-lang/html": "2.0.0 <= v < 3.0.0",
+        "rtfeldman/elm-css": "16.0.0 <= v < 17.0.0"
+    },
+    "elm-version": "0.18.0 <= v < 0.19.0"
+}
