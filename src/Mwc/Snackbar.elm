@@ -14,13 +14,12 @@ import Mwc.Button as Button
 import Mwc.IconButton as IconButton
 import Process
 import Task
-import Time exposing (Time)
 
 
 type Property msg a
     = Message String
     | ButtonText String
-    | Timeout Time
+    | Timeout Float
     | ButtonClick (Maybe (Maybe a -> msg))
     | Payload (Maybe a)
 
@@ -32,7 +31,7 @@ type Property msg a
 type alias Config msg a =
     { message : String
     , buttonText : String
-    , timeout : Time
+    , timeout : Float
     , buttonClick : Maybe (Maybe a -> msg)
     , id : Int
     , toMsg : Msg msg a -> msg
@@ -108,7 +107,7 @@ buttonText val =
 
 {-| Amount of time (in ms) the snackbar should be displayed default is 3000ms
 -}
-timeout : Time -> Property msg a
+timeout : Float -> Property msg a
 timeout val =
     Timeout val
 
@@ -142,13 +141,13 @@ type Msg msg a
 {-| Snackbar update functions
 -}
 update : Msg msg a -> Model msg a -> ( Model msg a, Cmd msg )
-update msg model =
+update msg snackbarModel =
     case msg of
         NoOp ->
-            ( model, Cmd.none )
+            ( snackbarModel, Cmd.none )
 
         ActionClick config ->
-            tryDequeue { model | state = Closed }
+            tryDequeue { snackbarModel | state = Closed }
                 |> (\( m, c ) ->
                         case config.buttonClick of
                             Just actionMsg ->
@@ -159,16 +158,16 @@ update msg model =
                    )
 
         CloseSnackBar id ->
-            case model.state of
+            case snackbarModel.state of
                 Active config ->
                     if config.id == id then
-                        tryDequeue { model | state = Closed }
+                        tryDequeue { snackbarModel | state = Closed }
 
                     else
-                        ( model, Cmd.none )
+                        ( snackbarModel, Cmd.none )
 
                 Closed ->
-                    tryDequeue model
+                    tryDequeue snackbarModel
 
 
 msgToCmd : msg -> Cmd msg
@@ -180,12 +179,12 @@ msgToCmd val =
 {-| used to add snackbar or toast
 -}
 add : List (Property msg a) -> Model msg a -> (Msg msg a -> msg) -> ( Model msg a, Cmd msg )
-add properties model toMsg =
+add properties snackbarModel toMsg =
     let
         config =
-            fetchConfig model.index toMsg properties
+            fetchConfig snackbarModel.index toMsg properties
     in
-    enqueue config model
+    enqueue config snackbarModel
         |> tryDequeue
 
 
@@ -218,28 +217,28 @@ propToConfig prop config =
 
 
 enqueue : Config msg a -> Model msg a -> Model msg a
-enqueue config model =
-    { model
-        | queue = config :: model.queue
-        , index = model.index + 1
+enqueue config snackbarModel =
+    { snackbarModel
+        | queue = config :: snackbarModel.queue
+        , index = snackbarModel.index + 1
     }
 
 
 tryDequeue : Model msg a -> ( Model msg a, Cmd msg )
-tryDequeue model =
-    case model.state of
+tryDequeue snackbarModel =
+    case snackbarModel.state of
         Active val ->
-            ( model, Cmd.none )
+            ( snackbarModel, Cmd.none )
 
         Closed ->
-            dequeue model
+            dequeue snackbarModel
 
 
 dequeue : Model msg a -> ( Model msg a, Cmd msg )
-dequeue model =
-    case model.queue of
+dequeue snackbarModel =
+    case snackbarModel.queue of
         x :: xs ->
-            ( { model
+            ( { snackbarModel
                 | state = Active x
                 , queue = xs
               }
@@ -247,7 +246,7 @@ dequeue model =
             )
 
         _ ->
-            ( model, Cmd.none )
+            ( snackbarModel, Cmd.none )
 
 
 setTimeOut : Config msg a -> Cmd msg
@@ -259,10 +258,10 @@ setTimeOut config =
 {-| Snackbar view
 -}
 view : Model msg a -> (Msg msg a -> msg) -> Html msg
-view model toMsg =
+view snackbarModel toMsg =
     let
         ( config, isActive ) =
-            case model.state of
+            case snackbarModel.state of
                 Active c ->
                     ( c, True )
 

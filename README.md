@@ -13,3 +13,8 @@ Polymer Web Components
 * Progress Spinner
 * Tabs
 * TextField
+
+This library is a wraper for Material Web Components and Polymer Webcomponents.
+To use this package you must import js package by running following command
+
+npm i material-components-elm-js-imports

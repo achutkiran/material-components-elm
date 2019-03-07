@@ -175,21 +175,21 @@ type Msg msg
 {-| update function of menu
 -}
 update : Msg msg -> Model -> ( Model, Cmd msg )
-update msg model =
+update msg menuModel =
     case msg of
         NoOp ->
-            ( model, Cmd.none )
+            ( menuModel, Cmd.none )
 
-        ToMain msg id ->
-            ( { model
-                | menuOpen = Dict.insert id (not (checkMenuOpen id model)) model.menuOpen
+        ToMain mainMsg id ->
+            ( { menuModel
+                | menuOpen = Dict.insert id (not (checkMenuOpen id menuModel)) menuModel.menuOpen
               }
-            , msgToCmd msg
+            , msgToCmd mainMsg
             )
 
         ToggleMenu id ->
-            ( { model
-                | menuOpen = Dict.insert id (not (checkMenuOpen id model)) model.menuOpen
+            ( { menuModel
+                | menuOpen = Dict.insert id (not (checkMenuOpen id menuModel)) menuModel.menuOpen
               }
             , Cmd.none
             )
@@ -204,7 +204,7 @@ msgToCmd val =
 {-| view function of menu
 -}
 view : List (Property msg) -> List (ItemConfig msg) -> String -> Model -> (Msg msg -> msg) -> Html msg
-view properties menuItems id model toMsg =
+view properties menuItems id menuModel toMsg =
     let
         config =
             fetchConfig properties
@@ -234,12 +234,12 @@ view properties menuItems id model toMsg =
                 ]
             , node "mwc-menu"
                 [ Attr.property "noWrapFocus" (Encode.bool True)
-                , Attr.property "open" (Encode.bool (checkMenuOpen id model))
+                , Attr.property "open" (Encode.bool (checkMenuOpen id menuModel))
                 , Attr.property "autofocus" (Encode.bool True)
                 ]
                 (List.map (fetchMenuItem toMsg id) menuItems)
             ]
-        , if checkMenuOpen id model then
+        , if checkMenuOpen id menuModel then
             div
                 [ Attr.css
                     (if config.zIndex == -1 then
@@ -318,8 +318,8 @@ propToConfig prop config =
 
 
 checkMenuOpen : String -> Model -> Bool
-checkMenuOpen id model =
-    case Dict.get id model.menuOpen of
+checkMenuOpen id menuModel =
+    case Dict.get id menuModel.menuOpen of
         Just val ->
             val
 
