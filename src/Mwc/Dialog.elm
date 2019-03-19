@@ -137,6 +137,7 @@ view properties =
                 , fontFamilies [ "Roboto" ]
                 , fontSize (px 20)
                 , color (rgba 0 0 0 0.87)
+                , marginTop (px 24)
                 ]
             ]
             [ text config.title ]
@@ -210,7 +211,11 @@ fetchProperties config =
     , Attr.css
         [ borderRadius (px 4)
         , if config.fullScreen then
-            width (pct 100)
+            Css.batch
+                [ maxWidth (pct 100)
+                , maxHeight (pct 100)
+                , overflow scroll
+                ]
 
           else
             width (px 560)
