@@ -1,9 +1,9 @@
-module Mwc.Dialog exposing (actionBar, body, extraAttributes, title, view, Visibility, visible, hidden, visibility)
+module Mwc.Dialog exposing (actionBar, body, extraAttributes, title, view, Visibility, visible, hidden, visibility, fullScreen)
 
 {-| Material Dialog. It is elm wrapper for Ploymer Paper--Dialog Component
 Used Elm-css for Styling
 
-@docs actionBar, body, extraAttributes, title, view, Visibility, visible, hidden, visibility
+@docs actionBar, body, extraAttributes, title, view, Visibility, visible, hidden, visibility, fullScreen
 
 -}
 
@@ -19,6 +19,7 @@ type Property msg
     | Body (List (Html msg))
     | Opened Visibility
     | ActionBar (List (Html msg))
+    | FullScreen Bool
     | OtherAttr (List (Attribute msg))
 
 
@@ -38,6 +39,7 @@ type alias Config msg =
     , body : List (Html msg)
     , opened : Visibility
     , actionBar : List (Html msg)
+    , fullScreen : Bool
     , otherAttr : List (Attribute msg)
     }
 
@@ -48,6 +50,7 @@ defaultConfig =
     , body = []
     , opened = Hidden
     , actionBar = []
+    , fullScreen = False
     , otherAttr = []
     }
 
@@ -105,6 +108,13 @@ extraAttributes val =
     OtherAttr val
 
 
+{-| Make dialog FullScreen
+-}
+fullScreen : Property msg
+fullScreen =
+    FullScreen True
+
+
 
 ---- View ----
 
@@ -135,7 +145,11 @@ view properties =
                 [ paddingBottom (px 28)
                 , color (rgba 0 0 0 0.6)
                 , textAlign start
-                , maxHeight (px 570)
+                , if config.fullScreen then
+                    maxHeight (pct 100)
+
+                  else
+                    maxHeight (px 570)
                 ]
             ]
             config.body
@@ -177,6 +191,9 @@ propToConfig prop config =
         ActionBar val ->
             { config | actionBar = val }
 
+        FullScreen val ->
+            { config | fullScreen = val }
+
         OtherAttr val ->
             { config | otherAttr = val }
 
@@ -192,7 +209,11 @@ fetchProperties config =
     , Attr.property "modal" (Encode.bool True)
     , Attr.css
         [ borderRadius (px 4)
-        , width (px 560)
+        , if config.fullScreen then
+            width (pct 100)
+
+          else
+            width (px 560)
         ]
     ]
         ++ config.otherAttr

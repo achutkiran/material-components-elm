@@ -3,7 +3,7 @@
     "name": "achutkiran/material-components-elm",
     "summary": "Elm Bindings for MWC and Polymer Elements",
     "license": "BSD-3-Clause",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "exposed-modules": [
         "Mwc.Button",
         "Mwc.CheckBox",
