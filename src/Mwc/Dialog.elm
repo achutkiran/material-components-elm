@@ -214,7 +214,7 @@ fetchProperties config =
             Css.batch
                 [ maxWidth (pct 100)
                 , maxHeight (pct 100)
-                , overflow scroll
+                , overflowY scroll
                 ]
 
           else
