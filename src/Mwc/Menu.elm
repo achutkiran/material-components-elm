@@ -1,8 +1,8 @@
-module Mwc.Menu exposing (Model, Msg, disabled, extraAttributes, icon, model, update, view, zIndex, item, onSelect, divider)
+module Mwc.Menu exposing (Model, Msg, disabled, extraAttributes, icon, model, update, view, zIndex, item, onSelect, divider, menuStyle)
 
 {-| Material design menu
 
-@docs Model, Msg, disabled, extraAttributes, icon, model, update, view, zIndex, item, onSelect, divider
+@docs Model, Msg, disabled, extraAttributes, icon, model, update, view, zIndex, item, onSelect, divider, menuStyle
 
 -}
 
@@ -21,6 +21,7 @@ type Property msg
     | ZIndex Int
     | Icon String
     | Divider
+    | MenuStyle Style
     | OnSelect msg
     | OtherAttr (List (Attribute msg))
 
@@ -33,6 +34,7 @@ type alias Config msg =
     { disabled : Bool
     , icon : String
     , zIndex : Int
+    , menuStyle : Style
     , otherAttr : List (Attribute msg)
     }
 
@@ -42,6 +44,7 @@ defaultConfig =
     { disabled = False
     , icon = ""
     , zIndex = -1
+    , menuStyle = width (pct 100)
     , otherAttr = []
     }
 
@@ -90,11 +93,18 @@ zIndex val =
     ZIndex val
 
 
-{-| divider fo menu item
+{-| divider for menu item
 -}
 divider : Property msg
 divider =
     Divider
+
+
+{-| Style for menu items container
+-}
+menuStyle : Style -> Property msg
+menuStyle val =
+    MenuStyle val
 
 
 {-| extraAttributes property of menu
@@ -236,6 +246,11 @@ view properties menuItems id menuModel toMsg =
                 [ Attr.property "noWrapFocus" (Encode.bool True)
                 , Attr.property "open" (Encode.bool (checkMenuOpen id menuModel))
                 , Attr.property "autofocus" (Encode.bool True)
+                , Attr.css
+                    [ position absolute
+                    , right (px 0)
+                    , config.menuStyle
+                    ]
                 ]
                 (List.map (fetchMenuItem toMsg id) menuItems)
             ]
@@ -272,7 +287,7 @@ view properties menuItems id menuModel toMsg =
 
 fetchMenuItem : (Msg msg -> msg) -> String -> ItemConfig msg -> Html msg
 fetchMenuItem toMsg id menuItem =
-    node "mwc-list-item"
+    div
         ([ case menuItem.onSelect of
             Just msg ->
                 onClick (toMsg (ToMain msg id))
@@ -285,12 +300,33 @@ fetchMenuItem toMsg id menuItem =
 
               else
                 borderBottomStyle none
+            , width (pct 100)
+            , height (px 48)
+            , displayFlex
+            , alignItems center
+            , justifyContent flexStart
+            , padding2 (px 0) (px 16)
+            , overflow hidden
+            , boxSizing borderBox
+            , hover
+                [ backgroundColor (rgba 0 0 0 0.08) ]
+            , if menuItem.disabled then
+                Css.batch
+                    [ pointerEvents none
+                    , color (rgba 0 0 0 0.38)
+                    ]
+
+              else
+                pointerEvents auto
             ]
-         , Attr.disabled menuItem.disabled
          ]
             ++ menuItem.otherAttr
         )
-        menuItem.html
+        (node "mwc-ripple"
+            []
+            []
+            :: menuItem.html
+        )
 
 
 fetchConfig : List (Property msg) -> Config msg
@@ -312,6 +348,9 @@ propToConfig prop config =
 
         OtherAttr val ->
             { config | otherAttr = val }
+
+        MenuStyle val ->
+            { config | menuStyle = val }
 
         _ ->
             config
